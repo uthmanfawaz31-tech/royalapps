@@ -21,8 +21,12 @@ function getDbConnection() {
             $pdo = new PDO('sqlite:' . DB_SQLITE_PATH);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            $pdo->exec('PRAGMA foreign_keys = ON;');
-            $pdo->exec('PRAGMA journal_mode = WAL;');
+            try {
+                $pdo->exec('PRAGMA foreign_keys = ON;');
+                $pdo->exec('PRAGMA journal_mode = WAL;');
+            } catch (Exception $e) {
+                // Safe fallback for shared hosting environments
+            }
         } else {
             $dsn = "mysql:host=" . DB_MYSQL_HOST . ";port=" . DB_MYSQL_PORT . ";dbname=" . DB_MYSQL_NAME . ";charset=utf8mb4";
             $pdo = new PDO($dsn, DB_MYSQL_USER, DB_MYSQL_PASS, [
