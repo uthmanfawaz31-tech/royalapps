@@ -1,0 +1,15 @@
+# SQLite Database
+data/*.sqlite
+data/*.sqlite-journal
+data/*.db
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Royal Media App Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         1. Animated Login Screen
+         ==================================================================== -->
+    <div id="login-screen" class="login-screen">
+        <!-- 3D Background Tiles -->
+        <div id="login-bg-grid" class="login-bg-grid"></div>
+
+        <div class="login-container">
+            <!-- Left Info Column -->
+            <div class="login-brand-info">
+                <div class="brand-icon-box">
+                    <img src="assets/store_logo.jpg" alt="Royal Media Logo" class="header-logo" onerror="this.src='assets/royal_ibo.jpg'">
+                </div>
+                <div class="welcome-tag">WELCOME TO</div>
+                <h1 class="brand-headline"><span class="store-name-text">Royal Media</span></h1>
+                <p class="brand-sub">All your Royal streaming apps in one place</p>
+
+                <div class="pills-row">
+                    <div class="feature-pill">👑 <span>5 Official apps</span></div>
+                    <div class="feature-pill">🔐 <span>One login</span></div>
+                    <div class="feature-pill">⚡ <span>Fast downloads</span></div>
+                    <div class="feature-pill">📱 <span>Barcode / QR scan</span></div>
+                </div>
+            </div>
+
+            <!-- Right Login Form Card -->
+            <div class="login-card">
+                <div class="card-header-row">
+                    <div class="card-tv-icon">👑</div>
+                    <div>
+                        <div class="card-title-text">Sign in</div>
+                        <div class="card-sub-text">with your IPTV or store account</div>
+                    </div>
+                </div>
+
+                <div id="login-error-msg" style="display: none; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; padding: 10px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 13px;"></div>
+
+                <form onsubmit="StoreApp.handleLogin(event)">
+                    <div class="input-field-group">
+                        <span class="input-icon-left">👤</span>
+                        <input type="text" id="input-username" class="login-input focusable" placeholder="Username" value="kasun" required autocomplete="username">
+                    </div>
+                    <div class="input-field-group">
+                        <span class="input-icon-left">🔒</span>
+                        <input type="password" id="input-password" class="login-input focusable" placeholder="Password" value="123456" required autocomplete="current-password">
+                        <button type="button" class="input-eye-btn" onclick="StoreApp.togglePassword()"><span id="eye-icon">👁</span></button>
+                    </div>
+
+                    <button type="submit" id="btn-login-submit" class="btn-signin focusable">
+                        <span>Sign in to Royal Media &rarr;</span>
+                    </button>
+                </form>
+
+                <div class="security-note">
+                    <div class="security-dot"></div>
+                    <span>Encrypted &bull; your password only goes to your provider</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ====================================================================
+         2. Main Application Shell
+         ==================================================================== -->
+    <div id="main-app-shell" class="main-app-shell" style="display: none;">
+        <!-- Top Navigation Bar -->
+        <header class="app-header">
+            <div class="header-brand">
+                <img src="assets/store_logo.jpg" class="header-logo" alt="Royal Media Logo">
+                <span class="header-title store-name-text">Royal Media</span>
+            </div>
+
+            <nav class="header-tabs">
+                <button class="tab-btn focusable active" data-tab="home" onclick="StoreApp.switchTab('home')">
+                    <span>🏠</span> <span>Home</span>
+                </button>
+                <button class="tab-btn focusable" data-tab="updates" onclick="StoreApp.switchTab('updates')">
+                    <span>⬇</span> <span>Updates</span>
+                    <span id="updates-badge" class="tab-badge" style="display: none;">0</span>
+                </button>
+                <button class="tab-btn focusable" data-tab="downloads" onclick="StoreApp.switchTab('downloads')">
+                    <span>📥</span> <span>Downloads</span>
+                </button>
+                <button class="tab-btn focusable" data-tab="notices" onclick="StoreApp.switchTab('notices')">
+                    <span>🔔</span> <span>Notices</span>
+                </button>
+                <button class="tab-btn focusable" data-tab="settings" onclick="StoreApp.switchTab('settings')">
+                    <span>⚙️</span> <span>Settings</span>
+                </button>
+            </nav>
+
+            <div class="header-user-actions">
+                <button class="btn-guide-header focusable" onclick="StoreApp.openTvGuideModal()" title="How to install & use on TV">📺 TV Guide</button>
+                <button id="btn-header-search" class="icon-btn focusable" onclick="StoreApp.openSearchModal()" title="Search apps">🔍</button>
+                <div class="user-avatar-pill focusable" onclick="StoreApp.switchTab('settings')" tabindex="0" title="Profile Settings">R</div>
+            </div>
+        </header>
+
+        <!-- Main Content View Area -->
+        <main class="view-container">
+
+            <!-- Tab 1: Home View -->
+            <div id="view-home">
+                <!-- Section 1: Hero Carousel ("Featured Royal Apps") -->
+                <div class="section-header">
+                    <span class="section-badge">FEATURED</span>
+                    <h2 class="section-title">Featured Royal Apps</h2>
+                </div>
+                <div id="hero-carousel" class="hero-carousel"></div>
+
+                <!-- Section 2: Shelf ("Royal Media Official Apps") -->
+                <div class="section-header">
+                    <span style="font-size: 20px;">👑</span>
+                    <h2 class="section-title">Royal Media Official Apps</h2>
+                </div>
+                <div id="best-of-week-shelf" class="apps-shelf-grid"></div>
+            </div>
+
+            <!-- Tab 2: Updates View -->
+            <div id="view-updates" style="display: none;">
+                <div class="section-header">
+                    <span style="font-size: 20px;">🔄</span>
+                    <h2 class="section-title">Available Updates</h2>
+                </div>
+                <div id="updates-list-container" class="notices-view"></div>
+            </div>
+
+            <!-- Tab 3: Downloads View -->
+            <div id="view-downloads" style="display: none;">
+                <div class="section-header">
+                    <span style="font-size: 20px;">📥</span>
+                    <h2 class="section-title">Download Engines</h2>
+                </div>
+                <div id="downloads-list-container"></div>
+            </div>
+
+            <!-- Tab 4: Notices View -->
+            <div id="view-notices" style="display: none;">
+                <div class="section-header">
+                    <span style="font-size: 20px;">📢</span>
+                    <h2 class="section-title">Royal Media Announcements</h2>
+                </div>
+                <div id="notices-list-container" class="notices-view"></div>
+            </div>
+
+            <!-- Tab 5: Settings View -->
+            <div id="view-settings" style="display: none;">
+                <div class="settings-view">
+                    <!-- User Account Card -->
+                    <div class="user-account-card">
+                        <div class="user-info-left">
+                            <div class="user-big-avatar">R</div>
+                            <div>
+                                <h2 class="user-name-title">Royal Member</h2>
+                                <div class="user-badges-row">
+                                    <span class="badge-active">● Active VIP</span>
+                                    <span class="badge-expiry">📅 <span class="user-expiry-text">Expires in 365 days</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-signout focusable" onclick="StoreApp.handleLogout()">➔ Sign out</button>
+                    </div>
+
+                    <!-- Downloads Settings -->
+                    <div>
+                        <div class="settings-section-title">DOWNLOAD ENGINE CONFIGURATION</div>
+                        <div class="settings-group">
+                            <div class="settings-row-item">
+                                <div>
+                                    <div class="settings-item-title">Download engine</div>
+                                    <div class="settings-item-sub">Auto tries Turbo (multi-connection) first and falls back to built-in.</div>
+                                </div>
+                                <select id="setting-download-engine" class="settings-select focusable" onchange="StoreApp.setDownloadEngine(this.value)">
+                                    <option value="turbo">Turbo ⚡ (Multi-connection)</option>
+                                    <option value="builtin">Built-in Engine</option>
+                                    <option value="system">System Engine</option>
+                                </select>
+                            </div>
+                            <div class="settings-row-item">
+                                <div>
+                                    <div class="settings-item-title">Install automatically</div>
+                                    <div class="settings-item-sub">Open the installer as soon as the download finishes.</div>
+                                </div>
+                                <div id="toggle-auto-install" class="toggle-switch focusable on" tabindex="0" onclick="StoreApp.toggleSetting('installAuto', 'toggle-auto-install')">
+                                    <div class="toggle-knob"></div>
+                                </div>
+                            </div>
+                            <div class="settings-row-item">
+                                <div>
+                                    <div class="settings-item-title">Delete APK after install</div>
+                                    <div class="settings-item-sub">Frees storage on TV boxes and Fire Sticks.</div>
+                                </div>
+                                <div id="toggle-delete-apk" class="toggle-switch focusable on" tabindex="0" onclick="StoreApp.toggleSetting('deleteAfterInstall', 'toggle-delete-apk')">
+                                    <div class="toggle-knob"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Display Settings -->
+                    <div>
+                        <div class="settings-section-title">DISPLAY & HARDWARE PERFORMANCE</div>
+                        <div class="settings-group">
+                            <div class="settings-row-item">
+                                <div>
+                                    <div class="settings-item-title">Performance mode</div>
+                                    <div class="settings-item-sub">Turns off blur and animations. Ideal for TV boxes with 2 GB RAM or less.</div>
+                                </div>
+                                <div id="toggle-perf-mode" class="toggle-switch focusable" tabindex="0" onclick="StoreApp.toggleSetting('performanceMode', 'toggle-perf-mode')">
+                                    <div class="toggle-knob"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View: App Details Sheet -->
+            <div id="view-details" class="details-view" style="display: none;">
+                <div class="btn-back-row">
+                    <button class="btn-back focusable" onclick="StoreApp.closeDetailsView()">&larr; Back to Apps</button>
+                </div>
+
+                <div class="details-hero-layout">
+                    <!-- Left Meta & Action Column -->
+                    <div class="app-meta-left">
+                        <div class="details-header-info">
+                            <img id="details-app-icon" src="assets/store_logo.jpg" class="details-large-icon" alt="App Icon">
+                            <div>
+                                <h1 id="details-app-title" class="details-title">RoyalTvXciptv.apk</h1>
+                                <div id="details-app-dev" class="details-dev">Royal Media Official App</div>
+                            </div>
+                        </div>
+
+                        <div class="details-badges-row">
+                            <span class="detail-pill" id="details-pill-cat">📁 IPTV Players</span>
+                            <span class="detail-pill gold" id="details-pill-ver"># v1.0</span>
+                            <span class="detail-pill" id="details-pill-size">💾 48.2 MB</span>
+                            <span class="detail-pill gold" id="details-pill-downloads">⚡ Code: 925742</span>
+                        </div>
+
+                        <div class="details-actions-row">
+                            <button id="btn-details-primary" class="btn-action-primary focusable">⬇ Install App</button>
+                            <button id="btn-details-other-ways" class="btn-action-secondary focusable" onclick="StoreApp.openOtherWaysModal()">
+                                <span>📱 Barcode & Downloader</span>
+                            </button>
+                        </div>
+                        <button id="btn-details-uninstall" class="btn-action-danger focusable" onclick="StoreApp.uninstallApp()">🗑 Uninstall</button>
+                    </div>
+
+                    <!-- Right Screenshots Viewer -->
+                    <div class="screenshots-viewer">
+                        <div class="screenshot-main-box">
+                            <img id="details-main-screenshot" class="screenshot-main-img" src="assets/screenshot_preview1.jpg" alt="Screenshot">
+                        </div>
+                        <div id="details-screenshot-thumbs" class="screenshot-thumbs-row"></div>
+                    </div>
+                </div>
+
+                <!-- Bottom Cards Grid: About & What's New -->
+                <div class="details-bottom-grid">
+                    <div class="info-card">
+                        <div class="info-card-header">
+                            <span>ℹ️</span> <span>About Application</span>
+                        </div>
+                        <div id="details-about-text" class="info-card-body"></div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-header">
+                            <span>✨</span> <span>What's New</span>
+                        </div>
+                        <div id="details-changelog-text" class="info-card-body"></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+
+    <!-- ====================================================================
+         Search Modal
+         ==================================================================== -->
+    <div id="search-modal" class="modal-overlay" style="display: none;">
+        <div class="other-ways-modal" style="max-width: 820px; width: 90%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 style="font-size: 20px; font-weight: 800; color: #fff;">🔍 Search Royal Media Apps</h2>
+                <button class="btn-back focusable" style="padding: 4px 12px;" onclick="StoreApp.closeSearchModal()">&larr; Close</button>
+            </div>
+            <div style="position: relative; margin-bottom: 20px;">
+                <input type="text" id="input-search-query" class="login-input focusable" placeholder="Type app name, or enter Downloader code..." oninput="StoreApp.handleSearch(this.value)">
+            </div>
+            <div id="search-results-grid" class="apps-shelf-grid" style="margin-bottom: 0; max-height: 420px; overflow-y: auto; padding-right: 6px;"></div>
+        </div>
+    </div>
+
+
+    <!-- ====================================================================
+         3. Barcode & Downloader Modal
+         ==================================================================== -->
+    <div id="other-ways-modal" class="modal-overlay" style="display: none;">
+        <div class="other-ways-modal">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <button class="btn-back focusable" style="padding: 4px 12px;" onclick="StoreApp.closeOtherWaysModal()">&larr; Back</button>
+                <div style="font-weight: 700; font-size: 14px; color: var(--accent-gold);">BARCODE & DOWNLOADER</div>
+            </div>
+            <p class="modal-help-sub">Scan the barcode on your TV with your phone, or type the code in the Fire TV Downloader app.</p>
+
+            <div class="downloader-code-row">
+                <!-- Downloader Code Banner -->
+                <div class="dl-code-banner">
+                    <div class="dl-label">⚡ Downloader code</div>
+                    <div id="modal-dl-code" class="dl-number">925742</div>
+                    <div class="dl-sub">Open the "Downloader" app (by AFTVnews) &rarr; type this code &rarr; Go.</div>
+                </div>
+
+                <!-- QR Code Banner -->
+                <div class="qr-code-banner">
+                    <div class="qr-white-card">
+                        <img id="modal-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=http://aftv.news/925742" alt="Barcode / QR Code">
+                    </div>
+                    <div class="qr-sub">Scan with phone camera</div>
+                </div>
+            </div>
+
+            <!-- Copy Link Button Card -->
+            <div class="copy-link-btn-card focusable" id="btn-copy-download-link" tabindex="0" onclick="StoreApp.copyDownloadLink()">
+                <div class="copy-top-btn">📋 Copy direct link</div>
+                <div id="modal-copy-url" class="copy-url-preview">http://aftv.news/925742</div>
+            </div>
+
+            <!-- All Sources List -->
+            <div class="sources-header">Download sources</div>
+            <div id="modal-sources-list" class="sources-list"></div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         4. TV & Firestick User Guide Modal
+         ==================================================================== -->
+    <div id="modal-tv-guide" class="modal-overlay" style="display: none;">
+        <div class="tv-guide-modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <button id="btn-close-tv-guide" class="btn-back focusable" style="padding: 6px 14px;" onclick="StoreApp.closeTvGuideModal()">&larr; Close Guide</button>
+                <div style="font-weight: 800; font-size: 15px; color: var(--accent-gold); display: flex; align-items: center; gap: 8px;">
+                    <span>📺</span>
+                    <span>TV & FIRESTICK SETUP GUIDE</span>
+                </div>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 22px;">
+                Choose whichever method is easiest for your setup. All apps are 100% compatible with Android TV, Fire TV, and TV boxes.
+            </p>
+
+            <div class="tv-guide-grid">
+                <!-- Method 1: Downloader on Fire TV -->
+                <div class="tv-step-card">
+                    <div class="tv-step-num">METHOD 1</div>
+                    <div class="tv-step-icon">⚡</div>
+                    <h3 class="tv-step-title">Firestick & Fire TV Downloader</h3>
+                    <p class="tv-step-desc">The fastest way on any Amazon Firestick or Fire TV Cube:</p>
+                    <ol class="tv-step-list">
+                        <li>Go to <strong>Find &rarr; Search</strong> on your Fire TV home screen.</li>
+                        <li>Type <strong>Downloader</strong> and install the orange Downloader app (by AFTVnews).</li>
+                        <li>Open Downloader, enter any app's code:
+                            <div style="margin: 8px 0; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 8px; font-family: monospace; font-size: 12px; color: #fbbf24;">
+                                &bull; RoyalTvXciptv: <strong>925742</strong><br>
+                                &bull; Royal Media IBO: <strong>5451030</strong><br>
+                                &bull; Royal Media TiVi: <strong>8542493</strong><br>
+                                &bull; Royal Smarters: <strong>6595514</strong><br>
+                                &bull; ROYAL VPN: <strong>6808531</strong>
+                            </div>
+                        </li>
+                        <li>Press <strong>GO</strong> &mdash; installation begins immediately!</li>
+                    </ol>
+                </div>
+
+                <!-- Method 2: TV Remote D-Pad Navigation -->
+                <div class="tv-step-card">
+                    <div class="tv-step-num">METHOD 2</div>
+                    <div class="tv-step-icon">🎮</div>
+                    <h3 class="tv-step-title">Using Your TV Remote Control</h3>
+                    <p class="tv-step-desc">Built for a 10-foot couch experience using your remote:</p>
+                    <ul class="tv-step-list">
+                        <li><strong>D-Pad Arrows [▲ ▼ ◀ ▶]:</strong> Move focus between apps and menus. A glowing gold ring highlights your active selection.</li>
+                        <li><strong>[OK / Center Button]:</strong> Open app details or trigger 1-click download.</li>
+                        <li><strong>[BACK / Return Button]:</strong> Return to the previous screen or close modals.</li>
+                        <li><strong>Performance Mode:</strong> If you are using a 1GB/2GB low-RAM TV box, turn on "Performance mode" in <strong>Settings</strong> for ultra-fluid 60FPS navigation.</li>
+                    </ul>
+                </div>
+
+                <!-- Method 3: Barcode Scan with Phone -->
+                <div class="tv-step-card">
+                    <div class="tv-step-num">METHOD 3</div>
+                    <div class="tv-step-icon">📱</div>
+                    <h3 class="tv-step-title">Scan Barcode on TV with Phone</h3>
+                    <p class="tv-step-desc">If your device doesn't have a web browser:</p>
+                    <ul class="tv-step-list">
+                        <li>Click the <strong>📱 Barcode</strong> button on any app card.</li>
+                        <li>A large phone-scannable QR code will appear on your TV screen.</li>
+                        <li>Point your phone camera or QR scanner at the TV screen.</li>
+                        <li>Tap the link to download the APK directly, then send to your TV via <em>Send Files to TV</em> or install on your phone.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Message -->
+    <div id="toast-msg" class="toast-container"></div>
+
+    <!-- High-Contrast TV Remote D-Pad Navigation Bar -->
+    <div id="tv-remote-bar" class="tv-remote-bar">
+        <div class="remote-hint"><span class="key-pill">▲▼◀▶</span><span>Navigate</span></div>
+        <div class="remote-hint"><span class="key-pill">OK</span><span>Select / Install</span></div>
+        <div class="remote-hint"><span class="key-pill">📱 BARCODE</span><span>Scan with Phone</span></div>
+        <div class="remote-hint"><span class="key-pill">BACK</span><span>Back</span></div>
+        <button class="btn-guide-pill focusable" onclick="StoreApp.openTvGuideModal()" title="Open TV setup instructions">📺 TV & Firestick Guide</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

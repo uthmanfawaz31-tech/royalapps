@@ -1,0 +1,53 @@
+
+    Directory: C:\Users\owner\Desktop\Royal Media\assets\logo
+
+Mode       LastWriteTime
+----       -------------
+d----     01/03/2026
+                   13:55
+d----     01/03/2026
+                   13:56
+d----     01/03/2026
+                   13:56
+d----     01/03/2026
+                   13:56
+d----     01/03/2026
+                   13:56
+-a---     01/03/2026
+                   09:45
+
+    Directory: C:\Users\owner\Desktop\Royal Media\assets\logo\RoyalTvXciptv
+
+Mode       LastWriteTime
+----       -------------
+-a---     01/03/2026
+                   13:54
+
+    Directory: C:\Users\owner\Desktop\Royal Media\assets\logo\Royal_Media_IBO
+
+Mode       LastWriteTime
+----       -------------
+-a---     01/03/2026
+                   13:55
+
+    Directory: C:\Users\owner\Desktop\Royal Media\assets\logo\Royal_Media_Smarters
+
+Mode       LastWriteTime
+----       -------------
+-a---     01/03/2026
+                   13:55
+
+    Directory: C:\Users\owner\Desktop\Royal Media\assets\logo\Royal_Media_TiVi
+
+Mode       LastWriteTime
+----       -------------
+-a---     01/03/2026
+                   13:54
+
+    Directory: C:\Users\owner\Desktop\Royal Media\assets\logo\ROYAL_VPN
+
+Mode       LastWriteTime
+----       -------------
+-a---     01/03/2026
+                   13:55
+

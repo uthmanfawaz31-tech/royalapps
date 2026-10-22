@@ -1,0 +1,6 @@
+# Protect SQLite Database
+<Files ~ "\.(sqlite|db)$">
+    Order allow,deny
+    Deny from all
+</Files>
+Deny from all
