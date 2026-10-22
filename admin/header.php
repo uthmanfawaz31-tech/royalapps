@@ -14,7 +14,119 @@ $baseUrl = getBaseUrl();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle ?? 'Admin Panel') ?> - <?= htmlspecialchars($storeName) ?></title>
-    <link rel="stylesheet" href="assets/style.css">
+        <link rel="stylesheet" href="assets/style.css?v=20261022_final">
+    <style>
+    /* Critical Admin Mobile Drawer & Grid Styles (Zero-Cache Guarantee) */
+    .mobile-hamburger-btn {
+        display: none;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        outline: none;
+    }
+    .sidebar-close-btn {
+        display: none;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        font-size: 20px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+    .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px);
+        z-index: 998;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
+    .sidebar-backdrop.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    @media (max-width: 992px) {
+        /* Turn sidebar into off-canvas drawer */
+        .sidebar {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            width: 270px !important;
+            max-width: 85vw !important;
+            transform: translateX(-100%) !important;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            z-index: 1000 !important;
+            box-shadow: none !important;
+        }
+        .sidebar.open {
+            transform: translateX(0) !important;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.95) !important;
+        }
+        .sidebar-backdrop { display: block !important; }
+        .mobile-hamburger-btn { display: inline-flex !important; }
+        .sidebar-close-btn { display: inline-flex !important; }
+
+        .main-wrapper {
+            margin-left: 0 !important;
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+        .top-nav {
+            padding: 12px 16px !important;
+        }
+        .content-body {
+            padding: 16px !important;
+        }
+
+        /* Responsive Grids */
+        .grid-layout-2-1,
+        .grid-layout-1-2,
+        .grid-layout-2,
+        .grid-layout-3,
+        div[style*="grid-template-columns"] {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+        }
+    }
+    @media (max-width: 640px) {
+        .admin-user-pill { display: none !important; }
+        .top-nav {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 10px !important;
+        }
+        .nav-actions {
+            justify-content: space-between !important;
+            width: 100% !important;
+        }
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+            gap: 12px !important;
+        }
+        .card-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 8px !important;
+        }
+    }
+    </style>
 </head>
 <body>
     <!-- Mobile Sidebar Backdrop Overlay -->

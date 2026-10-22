@@ -4,7 +4,353 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Royal Media App Store</title>
-    <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style.css?v=20261022_final">
+    <style>
+    /* ==========================================================================
+       Critical Mobile-First Drawer & Responsive Styles (Zero-Cache Guarantee)
+       ========================================================================== */
+    .header-left-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .btn-hamburger {
+        display: none;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(245, 158, 11, 0.4);
+        color: #f59e0b;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        font-size: 20px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        padding: 0;
+        outline: none;
+    }
+    .btn-hamburger:hover, .btn-hamburger:active {
+        background: rgba(245, 158, 11, 0.2);
+        box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    }
+
+    /* Mobile Drawer - Hidden offscreen by default */
+    .mobile-nav-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .mobile-nav-backdrop.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .mobile-nav-drawer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 290px;
+        max-width: 85vw;
+        background: #0d121f;
+        border-right: 1px solid rgba(245, 158, 11, 0.35);
+        box-shadow: 0 0 60px rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .mobile-nav-drawer.open {
+        transform: translateX(0);
+    }
+
+    .drawer-header {
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .drawer-close-btn {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+    .drawer-user-info {
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(245, 158, 11, 0.06);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .drawer-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: #0b0e14;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 16px;
+    }
+    .drawer-user-name { font-size: 14px; font-weight: 700; color: #fff; }
+    .drawer-user-sub { font-size: 11px; color: #f59e0b; }
+
+    .drawer-nav {
+        padding: 14px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1;
+    }
+    .drawer-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        background: none;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        color: #9aa1b2;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        width: 100%;
+        text-decoration: none;
+    }
+    .drawer-nav-item:hover, .drawer-nav-item.active {
+        background: rgba(245, 158, 11, 0.12);
+        border-color: rgba(245, 158, 11, 0.3);
+        color: #f59e0b;
+    }
+    .drawer-nav-item.danger {
+        color: #fca5a5;
+        margin-top: auto;
+    }
+    .drawer-nav-item.danger:hover {
+        background: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.3);
+    }
+    .drawer-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 8px 6px;
+    }
+    .nav-icon { font-size: 18px; width: 22px; text-align: center; }
+
+    /* Modern Mobile Bottom Navigation Bar */
+    .mobile-bottom-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: rgba(10, 14, 23, 0.96);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(245, 158, 11, 0.3);
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        align-items: center;
+        justify-content: space-around;
+    }
+    .bottom-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        background: none;
+        border: none;
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 6px 2px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
+    .bottom-nav-item .bottom-icon {
+        font-size: 18px;
+        line-height: 1;
+        transition: transform 0.2s;
+    }
+    .bottom-nav-item.active {
+        color: #f59e0b;
+    }
+    .bottom-nav-item.active .bottom-icon {
+        transform: translateY(-2px);
+    }
+
+    /* Breakpoint: Tablets & Mobile (< 900px) */
+    @media (max-width: 900px) {
+        .btn-hamburger { display: inline-flex !important; }
+        .header-tabs { display: none !important; }
+        .btn-guide-header { display: none !important; }
+        .app-header {
+            height: 60px !important;
+            padding: 0 16px !important;
+        }
+        .header-brand .header-title {
+            font-size: 17px !important;
+        }
+        .header-brand .header-logo {
+            width: 36px !important;
+            height: 36px !important;
+        }
+    }
+
+    /* Breakpoint: Mobile Phones (<= 768px) */
+    @media (max-width: 768px) {
+        .mobile-bottom-nav { display: flex !important; }
+        .tv-remote-bar { display: none !important; }
+        
+        .view-container {
+            padding: 16px 14px 84px !important;
+        }
+
+        /* 2-Column Responsive App Grid */
+        .apps-shelf-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+            margin-bottom: 24px !important;
+        }
+        .app-card-item {
+            padding: 16px 10px 14px !important;
+            border-radius: 18px !important;
+            min-width: 0 !important;
+        }
+        .app-card-icon-wrap {
+            width: 64px !important;
+            height: 64px !important;
+            margin-bottom: 10px !important;
+        }
+        .app-card-icon {
+            width: 64px !important;
+            height: 64px !important;
+            border-radius: 16px !important;
+        }
+        .app-card-title {
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            margin-bottom: 4px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            width: 100% !important;
+        }
+        .app-card-dl-code {
+            font-size: 10px !important;
+            padding: 2px 6px !important;
+            margin-bottom: 10px !important;
+        }
+        .card-quick-actions {
+            display: flex !important;
+            gap: 6px !important;
+            width: 100% !important;
+        }
+        .btn-card-scan {
+            padding: 6px 4px !important;
+            font-size: 11px !important;
+            border-radius: 8px !important;
+        }
+
+        /* Single-card Featured Hero Carousel */
+        .hero-carousel {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+            margin-bottom: 24px !important;
+        }
+        .hero-card {
+            height: 180px !important;
+            padding: 16px !important;
+            border-radius: 18px !important;
+        }
+        .hero-title {
+            font-size: 18px !important;
+        }
+        .hero-app-icon {
+            width: 52px !important;
+            height: 52px !important;
+            border-radius: 14px !important;
+        }
+
+        /* Login Screen Mobile */
+        .login-container {
+            grid-template-columns: 1fr !important;
+            gap: 20px !important;
+            max-width: 440px !important;
+            width: 92% !important;
+            margin: 0 auto !important;
+            padding: 20px 10px !important;
+        }
+        .login-brand-info {
+            align-items: center !important;
+            text-align: center !important;
+        }
+        .brand-headline {
+            font-size: 32px !important;
+        }
+        .pills-row {
+            justify-content: center !important;
+        }
+        .login-card {
+            padding: 24px 18px !important;
+            border-radius: 20px !important;
+        }
+
+        /* Modals Mobile */
+        .other-ways-modal {
+            padding: 20px 16px !important;
+            border-radius: 20px !important;
+            width: 95% !important;
+            max-height: 90vh !important;
+            overflow-y: auto !important;
+        }
+        .downloader-code-row {
+            grid-template-columns: 1fr !important;
+            gap: 14px !important;
+        }
+        .tv-guide-modal-card {
+            padding: 20px 16px !important;
+            border-radius: 20px !important;
+            width: 95% !important;
+        }
+        .tv-guide-grid {
+            grid-template-columns: 1fr !important;
+            gap: 14px !important;
+        }
+    }
+    </style>
 </head>
 <body>
 
@@ -504,6 +850,6 @@
         <button class="btn-guide-pill focusable" onclick="StoreApp.openTvGuideModal()" title="Open TV setup instructions">📺 TV & Firestick Guide</button>
     </div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=20261022_final"></script>
 </body>
 </html>
