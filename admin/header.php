@@ -17,14 +17,20 @@ $baseUrl = getBaseUrl();
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
+
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <img src="<?= $baseUrl ?>/<?= ltrim($storeLogo, '/') ?>" class="sidebar-logo" alt="Logo" onerror="this.src='../app/assets/store_logo.jpg'">
-            <div>
-                <div class="brand-name"><?= htmlspecialchars($storeName) ?></div>
-                <span class="brand-badge">ADMIN v2.0</span>
+            <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;">
+                <img src="<?= $baseUrl ?>/<?= ltrim($storeLogo, '/') ?>" class="sidebar-logo" alt="Logo" onerror="this.src='../app/assets/store_logo.jpg'">
+                <div style="min-width: 0;">
+                    <div class="brand-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= htmlspecialchars($storeName) ?></div>
+                    <span class="brand-badge">ADMIN v2.0</span>
+                </div>
             </div>
+            <button type="button" class="sidebar-close-btn" onclick="toggleSidebar(false)" aria-label="Close menu">&times;</button>
         </div>
         <ul class="sidebar-menu">
             <li class="menu-item">
@@ -83,7 +89,7 @@ $baseUrl = getBaseUrl();
             </li>
         </ul>
         <div class="sidebar-footer">
-            <button class="btn btn-secondary btn-sm" onclick="toggleTheme()" title="Switch Light/Dark mode">🌓 Theme</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="toggleTheme()" title="Switch Light/Dark mode">🌓 Theme</button>
             <a href="login.php?logout=1" class="btn btn-danger btn-sm">🚪 Logout</a>
         </div>
     </aside>
@@ -91,9 +97,14 @@ $baseUrl = getBaseUrl();
     <!-- Main Wrapper -->
     <div class="main-wrapper">
         <header class="top-nav">
-            <h1 class="nav-title"><?= htmlspecialchars($pageTitle ?? 'Dashboard') ?></h1>
+            <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                <button type="button" class="mobile-hamburger-btn" onclick="toggleSidebar(true)" aria-label="Open navigation menu">
+                    <span>☰</span>
+                </button>
+                <h1 class="nav-title"><?= htmlspecialchars($pageTitle ?? 'Dashboard') ?></h1>
+            </div>
             <div class="nav-actions">
-                <span style="color: var(--text-secondary); font-size: 13px;">Logged in as <strong><?= htmlspecialchars($_SESSION['admin_username'] ?? 'Admin') ?></strong></span>
+                <span class="admin-user-pill" style="color: var(--text-secondary); font-size: 13px;">Logged in as <strong><?= htmlspecialchars($_SESSION['admin_username'] ?? 'Admin') ?></strong></span>
                 <a href="apps.php?action=add" class="btn btn-primary btn-sm">+ Upload APK</a>
             </div>
         </header>

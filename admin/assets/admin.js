@@ -2,6 +2,36 @@
  * Admin Panel Interactive Scripts
  */
 
+// Mobile Sidebar Drawer Toggle
+function toggleSidebar(open) {
+    const sidebar = document.querySelector('.sidebar');
+    const backdrop = document.querySelector('.sidebar-backdrop');
+    if (!sidebar) return;
+
+    if (typeof open === 'boolean') {
+        if (open) {
+            sidebar.classList.add('open');
+            if (backdrop) backdrop.classList.add('active');
+            document.body.classList.add('sidebar-open');
+        } else {
+            sidebar.classList.remove('open');
+            if (backdrop) backdrop.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+    } else {
+        const isOpen = sidebar.classList.toggle('open');
+        if (backdrop) backdrop.classList.toggle('active', isOpen);
+        document.body.classList.toggle('sidebar-open', isOpen);
+    }
+}
+
+// Close sidebar on window resize to desktop
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 992) {
+        toggleSidebar(false);
+    }
+});
+
 // Theme Toggle
 function toggleTheme() {
     const isLight = document.body.classList.toggle('light-mode');

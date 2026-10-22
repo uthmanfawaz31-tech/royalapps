@@ -221,11 +221,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $allPass) {
                 </div>
                 <div class="form-group">
                     <label class="form-label">Admin Username</label>
-                    <input type="text" name="admin_user" class="form-control" value="admin" required>
+                    <input type="text" name="admin_user" class="form-control" value="admin" required placeholder="Choose admin username">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Admin Password</label>
-                    <input type="password" name="admin_pass" class="form-control" value="admin123" required>
+                    <input type="password" name="admin_pass" class="form-control" required placeholder="Enter secure admin password">
                 </div>
                 <button type="submit" class="btn-submit" <?= !$allPass ? 'disabled' : '' ?>>
                     🚀 Run 2-Minute Installation &rarr;

@@ -258,7 +258,7 @@ const StoreApp = {
     // Navigation Switcher
     switchTab(tab) {
         this.state.activeTab = tab;
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        document.querySelectorAll('.tab-btn, .drawer-nav-item, .bottom-nav-item').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.tab === tab);
         });
 
@@ -284,6 +284,28 @@ const StoreApp = {
             const firstFocus = document.querySelector(`#view-${tab} .focusable`);
             if (firstFocus) this.setFocus(firstFocus);
         }, 100);
+    },
+
+    toggleMobileDrawer(open) {
+        const drawer = document.getElementById('mobile-nav-drawer');
+        const backdrop = document.getElementById('mobile-nav-backdrop');
+        if (!drawer) return;
+
+        if (typeof open === 'boolean') {
+            if (open) {
+                drawer.classList.add('open');
+                if (backdrop) backdrop.classList.add('active');
+                document.body.classList.add('drawer-open');
+            } else {
+                drawer.classList.remove('open');
+                if (backdrop) backdrop.classList.remove('active');
+                document.body.classList.remove('drawer-open');
+            }
+        } else {
+            const isOpen = drawer.classList.toggle('open');
+            if (backdrop) backdrop.classList.toggle('active', isOpen);
+            document.body.classList.toggle('drawer-open', isOpen);
+        }
     },
 
     // =========================================================================

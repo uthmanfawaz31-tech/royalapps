@@ -48,11 +48,11 @@
                 <form onsubmit="StoreApp.handleLogin(event)">
                     <div class="input-field-group">
                         <span class="input-icon-left">👤</span>
-                        <input type="text" id="input-username" class="login-input focusable" placeholder="Username" value="kasun" required autocomplete="username">
+                        <input type="text" id="input-username" class="login-input focusable" placeholder="Enter username" required autocomplete="username">
                     </div>
                     <div class="input-field-group">
                         <span class="input-icon-left">🔒</span>
-                        <input type="password" id="input-password" class="login-input focusable" placeholder="Password" value="123456" required autocomplete="current-password">
+                        <input type="password" id="input-password" class="login-input focusable" placeholder="Enter password" required autocomplete="current-password">
                         <button type="button" class="input-eye-btn" onclick="StoreApp.togglePassword()"><span id="eye-icon">👁</span></button>
                     </div>
 
@@ -76,9 +76,14 @@
     <div id="main-app-shell" class="main-app-shell" style="display: none;">
         <!-- Top Navigation Bar -->
         <header class="app-header">
-            <div class="header-brand">
-                <img src="assets/store_logo.jpg" class="header-logo" alt="Royal Media Logo">
-                <span class="header-title store-name-text">Royal Media</span>
+            <div class="header-left-group">
+                <button type="button" class="btn-hamburger focusable" onclick="StoreApp.toggleMobileDrawer()" aria-label="Toggle navigation menu">
+                    <span>☰</span>
+                </button>
+                <div class="header-brand" onclick="StoreApp.switchTab('home')" style="cursor: pointer;">
+                    <img src="assets/store_logo.jpg" class="header-logo" alt="Royal Media Logo">
+                    <span class="header-title store-name-text">Royal Media</span>
+                </div>
             </div>
 
             <nav class="header-tabs">
@@ -106,6 +111,52 @@
                 <div class="user-avatar-pill focusable" onclick="StoreApp.switchTab('settings')" tabindex="0" title="Profile Settings">R</div>
             </div>
         </header>
+
+        <!-- Mobile Slide-Out Drawer Navigation -->
+        <div id="mobile-nav-backdrop" class="mobile-nav-backdrop" onclick="StoreApp.toggleMobileDrawer(false)"></div>
+        <aside id="mobile-nav-drawer" class="mobile-nav-drawer">
+            <div class="drawer-header">
+                <div class="header-brand">
+                    <img src="assets/store_logo.jpg" class="header-logo" alt="Logo">
+                    <span class="header-title store-name-text">Royal Media</span>
+                </div>
+                <button type="button" class="drawer-close-btn" onclick="StoreApp.toggleMobileDrawer(false)" aria-label="Close menu">&times;</button>
+            </div>
+            <div class="drawer-user-info">
+                <div class="drawer-avatar">R</div>
+                <div>
+                    <div class="drawer-user-name">Royal VIP Member</div>
+                    <div class="drawer-user-sub">TV & Mobile App Store</div>
+                </div>
+            </div>
+            <nav class="drawer-nav">
+                <button class="drawer-nav-item active" data-tab="home" onclick="StoreApp.switchTab('home'); StoreApp.toggleMobileDrawer(false);">
+                    <span class="nav-icon">🏠</span> <span>Home & Featured</span>
+                </button>
+                <button class="drawer-nav-item" data-tab="updates" onclick="StoreApp.switchTab('updates'); StoreApp.toggleMobileDrawer(false);">
+                    <span class="nav-icon">⬇</span> <span>Updates</span>
+                </button>
+                <button class="drawer-nav-item" data-tab="downloads" onclick="StoreApp.switchTab('downloads'); StoreApp.toggleMobileDrawer(false);">
+                    <span class="nav-icon">📥</span> <span>Download Engines</span>
+                </button>
+                <button class="drawer-nav-item" data-tab="notices" onclick="StoreApp.switchTab('notices'); StoreApp.toggleMobileDrawer(false);">
+                    <span class="nav-icon">🔔</span> <span>Announcements</span>
+                </button>
+                <button class="drawer-nav-item" data-tab="settings" onclick="StoreApp.switchTab('settings'); StoreApp.toggleMobileDrawer(false);">
+                    <span class="nav-icon">⚙️</span> <span>Settings & Performance</span>
+                </button>
+                <div class="drawer-divider"></div>
+                <button class="drawer-nav-item" onclick="StoreApp.openTvGuideModal(); StoreApp.toggleMobileDrawer(false);">
+                    <span class="nav-icon">📺</span> <span>TV & Firestick Setup</span>
+                </button>
+                <button class="drawer-nav-item" onclick="StoreApp.openSearchModal(); StoreApp.toggleMobileDrawer(false);">
+                    <span class="nav-icon">🔍</span> <span>Search Apps</span>
+                </button>
+                <button class="drawer-nav-item danger" onclick="StoreApp.handleLogout(); StoreApp.toggleMobileDrawer(false);">
+                    <span class="nav-icon">🚪</span> <span>Sign Out</span>
+                </button>
+            </nav>
+        </aside>
 
         <!-- Main Content View Area -->
         <main class="view-container">
@@ -419,6 +470,30 @@
 
     <!-- Toast Notification Message -->
     <div id="toast-msg" class="toast-container"></div>
+
+    <!-- Modern Mobile Bottom Navigation Bar (Active on phones & small tablets) -->
+    <nav id="mobile-bottom-nav" class="mobile-bottom-nav">
+        <button type="button" class="bottom-nav-item active" data-tab="home" onclick="StoreApp.switchTab('home')">
+            <span class="bottom-icon">🏠</span>
+            <span class="bottom-label">Home</span>
+        </button>
+        <button type="button" class="bottom-nav-item" data-tab="updates" onclick="StoreApp.switchTab('updates')">
+            <span class="bottom-icon">⬇</span>
+            <span class="bottom-label">Updates</span>
+        </button>
+        <button type="button" class="bottom-nav-item" data-tab="downloads" onclick="StoreApp.switchTab('downloads')">
+            <span class="bottom-icon">📥</span>
+            <span class="bottom-label">Downloads</span>
+        </button>
+        <button type="button" class="bottom-nav-item" data-tab="notices" onclick="StoreApp.switchTab('notices')">
+            <span class="bottom-icon">🔔</span>
+            <span class="bottom-label">Notices</span>
+        </button>
+        <button type="button" class="bottom-nav-item" data-tab="settings" onclick="StoreApp.switchTab('settings')">
+            <span class="bottom-icon">⚙️</span>
+            <span class="bottom-label">Settings</span>
+        </button>
+    </nav>
 
     <!-- High-Contrast TV Remote D-Pad Navigation Bar -->
     <div id="tv-remote-bar" class="tv-remote-bar">

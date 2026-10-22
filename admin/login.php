@@ -57,8 +57,10 @@ $baseUrl = getBaseUrl();
             justify-content: center;
             background: radial-gradient(ellipse at 50% 10%, #2a1e05 0%, #0c0f18 50%, #06080c 100%);
             color: #fff;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
+            padding: 24px 14px;
         }
 
         /* Animated Floating Background Mesh & Light Orbs */
@@ -366,17 +368,15 @@ $baseUrl = getBaseUrl();
             box-shadow: 0 0 8px #10b981;
         }
 
-        .default-hint {
-            margin-top: 18px;
-            padding: 10px 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            font-size: 12px;
-            color: #94a3b8;
-            text-align: center;
+        @media (max-width: 480px) {
+            .login-card-wrapper { padding: 10px; }
+            .login-card { padding: 28px 20px; border-radius: 20px; }
+            .login-title { font-size: 22px; }
+            .logo-aura-container { width: 72px; height: 72px; }
+            .login-logo { width: 56px; height: 56px; }
         }
-        .default-hint strong { color: #fbbf24; }
+
+
     </style>
 </head>
 <body>
@@ -412,7 +412,7 @@ $baseUrl = getBaseUrl();
                     <label class="form-label">Administrator Username</label>
                     <div class="input-wrap">
                         <span class="input-icon">👤</span>
-                        <input type="text" name="username" class="form-control-custom" placeholder="admin" required autofocus>
+                        <input type="text" name="username" class="form-control-custom" placeholder="Enter username" required autofocus autocomplete="username">
                     </div>
                 </div>
 
@@ -420,7 +420,7 @@ $baseUrl = getBaseUrl();
                     <label class="form-label">Password</label>
                     <div class="input-wrap">
                         <span class="input-icon">🔒</span>
-                        <input type="password" id="admin_pwd_field" name="password" class="form-control-custom" placeholder="••••••••" required>
+                        <input type="password" id="admin_pwd_field" name="password" class="form-control-custom" placeholder="Enter password" required autocomplete="current-password">
                         <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility()" title="Toggle visibility">👁</button>
                     </div>
                 </div>
@@ -430,10 +430,6 @@ $baseUrl = getBaseUrl();
                     <span>&rarr;</span>
                 </button>
             </form>
-
-            <div class="default-hint">
-                Default Access: <strong>admin</strong> &bull; <strong>admin123</strong>
-            </div>
 
             <div class="security-badges">
                 <div class="sec-item"><span class="sec-dot"></span><span>256-Bit SSL</span></div>
